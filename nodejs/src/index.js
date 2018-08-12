@@ -1,9 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import analysis from './analysis';
+import mongoose from 'mongoose';
+import users from './usersCtrl';
 import  cors  from 'cors';
 
 const app = express();
+
+// connect to Mongo when the app initializes
+mongoose.connect('mongodb://localhost/ah2018');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -13,7 +17,8 @@ app.get('/api', (req, res, next) => {
     res.sendStatus(200);
 });
 
-app.use('/api/analysis', analysis);
+
+app.get('/users', users.list);
 
 const server = app.listen(process.env.PORT || 3000, () => {
     const { port } = server.address();
