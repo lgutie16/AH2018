@@ -1,17 +1,13 @@
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-
 var User       = require('../app/models/user');
-
 var configAuth = require('./auth');
 
 module.exports = function(passport) {
-
-
+    
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
-
     
     passport.deserializeUser(function(id, done) {
         User.findById(id, function(err, user) {
@@ -19,7 +15,6 @@ module.exports = function(passport) {
         });
     });
 
-    
     passport.use('local-registro',new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
@@ -67,15 +62,12 @@ module.exports = function(passport) {
 
         process.nextTick(function() {
 
-            
             if (!req.user) {
 
                 User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
                     if (err)
                         return done(err);
-
                     if (user) {
-
                         if (!user.facebook.token) {
                             user.facebook.token = token;
                             user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
@@ -84,16 +76,13 @@ module.exports = function(passport) {
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
-                                    
                                 return done(null, user);
                             });
                         }
-
                         return done(null, user); 
                     } else {
                         
                         var newUser            = new User();
-
                         newUser.facebook.id    = profile.id;
                         newUser.facebook.token = token;
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
