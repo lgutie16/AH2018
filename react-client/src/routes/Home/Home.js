@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {
   Row,
   Col,
@@ -17,8 +18,7 @@ import {
 import { getRequest, postRequest } from '../../RequestMethods'
 const { Header, Sider, Content } = Layout
 const { Meta } = Card
-const Option = Select.Option;
-
+const Option = Select.Option
 
 const options = [
   {
@@ -53,16 +53,23 @@ const Disabled = {
 }
 
 const Selector = ({ name, onChange }) => (
-  <Select name={name} defaultValue="no" style={{ width: 120 }} onChange={onChange}>
-    <Option value="no">Si</Option>
-    <Option value="si">No</Option>
-  </Select>
+  <select
+    name={name}
+    defaultValue="default"
+    style={{ width: 120 }}
+    onChange={onChange}
+  >
+    <option value="default">Select an option</option>
+    <option value="no">No</option>
+    <option value="si">Si</option>
+  </select>
 )
 
 class Home extends React.Component {
   state = {
     cultura: false,
     deporte: false,
+    preferences: [],
     categories: [],
     events: []
   }
@@ -70,27 +77,29 @@ class Home extends React.Component {
   onChange = event => {
     const name = event.target.name
     const value = event.target.value
-    console.log(name, value)
     this.setState({
-      [value]: value
+      preferences: [...this.state.preferences, name]
     })
   }
 
   getPreferences = async () => {
-    const { data } = this.state
+    const { preferences } = this.state
+
     const favoutiteCategories = await postRequest(
       `http://localhost:3000/categories`,
-      data
+      { preferences: preferences }
     )
       .then(response => {
-        this.setState({
-          categories: response
-        })
         return response
       })
       .catch(error => {
         console.log(error)
       })
+
+
+    this.setState({
+      categories: favoutiteCategories
+    })
 
     const events = await postRequest(`http://localhost:3000/categories`)
       .then(response => {
@@ -111,7 +120,7 @@ class Home extends React.Component {
     return (
       <div>
         <Row>
-          <Col offset={6} span={6}>
+          <Col offset={4} span={6}>
             <Card
               style={{ width: 340 }}
               cover={<img src={coverImage} style={CoverImageStyle} />}
@@ -189,14 +198,37 @@ class Home extends React.Component {
             <Selector
               size="small"
               options={options}
-              name={'Community & Culture'}
+              name={'Music'}
               onChange={this.onChange}
             />
             <br />
             <br />
-            <Button type="primary" style={{ width: 190 }} block>
+            <Button
+              type="primary"
+              style={{ width: 190 }}
+              block
+              onClick={this.getPreferences}
+            >
               Get my preferences
             </Button>
+          </Col>
+          <Col span={4}>
+            <List
+              size="small"
+              header={<div>Your suggestion</div>}
+              bordered
+              dataSource={
+                this.state.categories ? this.state.categories.preferences : []
+              }
+              renderItem={item => {
+                return <List.Item>
+                  {item.name}
+                  <br />
+                  <a href={item.resource_uri}> {"Click to see events about " + item.name } </a>
+                  <br />
+                </List.Item>
+              }}
+            />
           </Col>
         </Row>
       </div>
