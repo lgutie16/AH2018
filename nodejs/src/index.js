@@ -19,6 +19,7 @@ app.get('/api', (req, res, next) => {
 
 
 app.get('/users', users.list);
+app.post('/users', users.create);
 
 const server = app.listen(process.env.PORT || 3000, () => {
     const { port } = server.address();

@@ -3,7 +3,8 @@ import Users from '../models/users.js';
 import knex from 'knex';
 
 
-exports.post = function(req, res) {
+exports.create = function(req, res) {
+	console.log(req.body)
     new Users({name: req.body.name, email: req.body.email}).save();
 }
 
