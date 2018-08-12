@@ -7,7 +7,7 @@ import  cors  from 'cors';
 const app = express();
 
 // connect to Mongo when the app initializes
-mongoose.connect('mongodb://localhost/ah2018');
+mongoose.connect('mongodb://localhost/test');
 
 app.use(cors());
 app.use(bodyParser.json());
