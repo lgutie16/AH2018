@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout, Menu , Icon } from 'antd';
 import Routes from './Routes';
 import './App.less';
+import MenuItem from 'antd/lib/menu/MenuItem';
 
 const { Header, Sider, Content } = Layout;
 
@@ -28,30 +29,37 @@ class App extends Component {
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1">
             <Icon type="user" />
-            <span>nav 1</span>
+            <span>user</span>
           </Menu.Item>
           <Menu.Item key="2">
-            <Icon type="video-camera" />
-            <span>nav 2</span>
+            <Icon type="picture" />
+            <span>Places</span>
           </Menu.Item>
           <Menu.Item key="3">
-            <Icon type="upload" />
-            <span>nav 3</span>
+            <Icon type="profile" />
+            <span>Events</span>
+          </Menu.Item>
+          <Menu.Item key="4">
+            <Icon type="team" />
+            <span>Persons</span>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
      
         <Header>
-       
-           {/* <Menu theme="dark" mode="horizontal">
-          <Menu.Item key="home">
+          <h1><strong>MiAgora</strong></h1>
+         {/*    { <Menu theme="dark" mode="horizontal">
+          <Menu.Item key="name">
+            <span>MiAgora</span>
+          </Menu.Item>
+         <Menu.Item key="home">
             <Link to="/">Home</Link>
           </Menu.Item>
           <Menu.Item key="ranking">
             <Link to="/ranking">Ranking</Link>
-          </Menu.Item>
-        </Menu> */}
+          </Menu.Item> 
+        </Menu> }*/}
         </Header>
         
         <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
